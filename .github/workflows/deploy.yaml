@@ -42,6 +42,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./frontend/
+          target: production
           load: true
           tags: ${{ env.FRONTEND_IMAGE }}
           cache-from: type=gha,scope=frontend

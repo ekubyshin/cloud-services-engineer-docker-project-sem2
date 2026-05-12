@@ -1,5 +1,9 @@
 # Dev (hot reload): только с docker-compose.yml и профилем `dev`.
 # Основной стек (nginx + статика) — профиль `local`, иначе конфликт портов с backend-dev.
+networks:
+  dev-net:
+    driver: bridge
+
 services:
   backend-dev:
     image: golang:1.25-alpine
@@ -28,7 +32,7 @@ services:
     ports:
       - "${BACKEND_DEV_PORT:-8081}:8081"
     networks:
-      - momo-net
+      - dev-net
     cpus: "0.75"
     mem_limit: 256m
     healthcheck:
@@ -64,7 +68,7 @@ services:
     ports:
       - "${FRONTEND_DEV_PORT:-3000}:8080"
     networks:
-      - momo-net
+      - dev-net
     depends_on:
       backend-dev:
         condition: service_healthy
