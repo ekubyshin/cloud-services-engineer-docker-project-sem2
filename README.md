@@ -39,9 +39,9 @@ docker compose --profile dev up -d --build
 - `FRONTEND_PORT` — порт frontend в production, по умолчанию `8080`.
 - `VUE_APP_API_URL` — API base URL для production-сборки frontend, по умолчанию `/api`.
 - `BACKEND_SECRET_FILE` — путь к локальному файлу Docker Secret.
-- `DEV_API_URL` — API URL для dev frontend, по умолчанию `http://localhost:8081`.
+- `DEV_API_URL` — API URL для dev frontend, по умолчанию `http://localhost:8082`.
 - `FRONTEND_DEV_PORT` — порт dev frontend, по умолчанию `3000`.
-- `BACKEND_DEV_PORT` — порт dev backend, по умолчанию `8081`.
+- `BACKEND_DEV_PORT` — порт dev backend, по умолчанию `8082`.
 
 ## Trivy
 

@@ -72,18 +72,30 @@ services:
     image: golang:1.25-alpine
     profiles:
       - dev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 200
+    user: nobody
     working_dir: /src
     command: sh -c "go run ./cmd/api"
     restart: unless-stopped
     environment:
       APP_ENV: development
+      GOCACHE: /tmp/go-build
+      GOMODCACHE: /tmp/go/pkg/mod
+      HOME: /tmp
     volumes:
-      - ./backend:/src
-      - backend-go-cache:/go/pkg/mod
+      - ./backend:/src:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m,mode=1777,exec
     ports:
-      - "${BACKEND_DEV_PORT:-8081}:8081"
+      - "${BACKEND_DEV_PORT:-8082}:8081"
     networks:
       - backend
+      - public
     cpus: "0.75"
     mem_limit: 256m
     healthcheck:
@@ -97,14 +109,24 @@ services:
     image: node:20-alpine
     profiles:
       - dev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 200
+    user: node
     working_dir: /app
-    command: sh -c "npm ci && npm run serve -- --host 0.0.0.0 --port 8080"
+    command: sh -c "cp -R /app /tmp/app && cd /tmp/app && npm ci && npm run serve -- --host 0.0.0.0 --port 8080"
     restart: unless-stopped
     environment:
-      VUE_APP_API_URL: ${DEV_API_URL:-http://localhost:8081}
+      HOME: /tmp
+      npm_config_cache: /tmp/npm-cache
+      VUE_APP_API_URL: ${DEV_API_URL:-http://localhost:8082}
     volumes:
-      - ./frontend:/app
-      - frontend-node-modules:/app/node_modules
+      - ./frontend:/app:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m,mode=1777,exec
     ports:
       - "${FRONTEND_DEV_PORT:-3000}:8080"
     networks:
@@ -130,8 +152,6 @@ networks:
 
 volumes:
   frontend-nginx-cache:
-  backend-go-cache:
-  frontend-node-modules:
 
 secrets:
   backend_api_token:
