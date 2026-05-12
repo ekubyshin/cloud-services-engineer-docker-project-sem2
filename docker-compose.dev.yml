@@ -1,3 +1,5 @@
+# Dev (hot reload): только с docker-compose.yml и профилем `dev`.
+# Основной стек (nginx + статика) — профиль `local`, иначе конфликт портов с backend-dev.
 services:
   backend-dev:
     image: golang:1.25-alpine

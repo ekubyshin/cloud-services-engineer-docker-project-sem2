@@ -102,4 +102,4 @@ jobs:
         uses: crazy-max/ghaction-github-runtime@v4
 
       - name: Build via Docker Compose
-        run: docker compose -f docker-compose.yml -f .github/docker-compose.cache.yml build
+        run: docker compose --profile local -f docker-compose.yml -f .github/docker-compose.cache.yml build
