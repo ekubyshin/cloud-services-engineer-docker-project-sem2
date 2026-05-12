@@ -1,0 +1,76 @@
+services:
+  backend-dev:
+    image: golang:1.25-alpine
+    profiles:
+      - dev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 200
+    user: nobody
+    working_dir: /src
+    command: sh -c "go run ./cmd/api"
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-UTC}
+      APP_ENV: development
+      GOCACHE: /tmp/go-build
+      GOMODCACHE: /tmp/go/pkg/mod
+      HOME: /tmp
+    volumes:
+      - ./backend:/src:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m,mode=1777,exec
+    ports:
+      - "${BACKEND_DEV_PORT:-8081}:8081"
+    networks:
+      - momo-net
+    cpus: "0.75"
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8081/health || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+
+  frontend-dev:
+    image: node:20-alpine
+    profiles:
+      - dev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 200
+    user: node
+    working_dir: /app
+    command: sh -c "cp -R /app /tmp/app && cd /tmp/app && npm ci && npm run serve -- --host 0.0.0.0 --port 8080"
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-UTC}
+      HOME: /tmp
+      npm_config_cache: /tmp/npm-cache
+      VUE_APP_API_URL: ${DEV_API_URL:-http://localhost:8081}
+    volumes:
+      - ./frontend:/app:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m,mode=1777,exec
+    ports:
+      - "${FRONTEND_DEV_PORT:-3000}:8080"
+    networks:
+      - momo-net
+    depends_on:
+      backend-dev:
+        condition: service_healthy
+    cpus: "0.75"
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080 || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
