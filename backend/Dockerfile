@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /src
 
@@ -15,7 +15,7 @@ RUN go build \
     ./cmd/api
 
 # --- runtime: small image, non-root user ---
-FROM alpine:3.20
+FROM alpine:3.22
 
 LABEL org.opencontainers.image.title="momo-store-backend" \
       org.opencontainers.image.description="Go API backend for momo-store"

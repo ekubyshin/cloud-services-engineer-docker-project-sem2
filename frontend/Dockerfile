@@ -12,7 +12,7 @@ COPY . .
 RUN NODE_OPTIONS=--openssl-legacy-provider npm run build && rm -rf node_modules
 
 # --- runtime: minimal static server, non-root ---
-FROM nginxinc/nginx-unprivileged:1.25-alpine
+FROM nginxinc/nginx-unprivileged:stable-alpine
 
 LABEL org.opencontainers.image.title="momo-store-frontend" \
       org.opencontainers.image.description="Vue static frontend for momo-store"
