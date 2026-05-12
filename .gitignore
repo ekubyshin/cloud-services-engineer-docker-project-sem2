@@ -17,3 +17,7 @@ vendor/
 .vscode/
 .DS_Store
 *.tgz
+
+# Local Docker Compose secrets
+secrets/*
+!secrets/*.example
