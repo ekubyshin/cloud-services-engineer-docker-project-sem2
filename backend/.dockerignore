@@ -1,0 +1,13 @@
+.git
+.gitignore
+Dockerfile
+*.md
+*.log
+.DS_Store
+.vscode
+.idea
+coverage
+tmp
+bin
+dist
+vendor
