@@ -1,6 +1,6 @@
 # Momo Store Docker Project
 
-Проект содержит Go backend и Vue frontend, подготовленные к запуску в Docker и Docker Compose.
+Проект содержит Go backend и Vue frontend, подготовленные к запуску в Docker и Docker Compose. Статика собирается в образе `frontend` и копируется в общий volume; раздачу и прокси к API выполняет отдельный контейнер `nginx` (образ `nginxinc/nginx-unprivileged`).
 
 #  Если не будет хватать до отлично, пожалуйста, верните на доработку!
 
