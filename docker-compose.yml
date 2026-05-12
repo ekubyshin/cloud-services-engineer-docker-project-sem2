@@ -92,7 +92,7 @@ services:
     tmpfs:
       - /tmp:size=512m,mode=1777,exec
     ports:
-      - "${BACKEND_DEV_PORT:-8082}:8081"
+      - "${BACKEND_DEV_PORT:-8081}:8081"
     networks:
       - backend
       - public
@@ -121,7 +121,7 @@ services:
     environment:
       HOME: /tmp
       npm_config_cache: /tmp/npm-cache
-      VUE_APP_API_URL: ${DEV_API_URL:-http://localhost:8082}
+      VUE_APP_API_URL: ${DEV_API_URL:-http://localhost:8081}
     volumes:
       - ./frontend:/app:ro
     read_only: true
