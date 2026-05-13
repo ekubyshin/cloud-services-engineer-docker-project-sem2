@@ -10,7 +10,7 @@
 
 - `APP_VERSION` — тег собираемых образов, по умолчанию `1.0.0`.
 - `TZ` — часовой пояс контейнеров, по умолчанию `UTC`.
-- `FRONTEND_PORT` — порт nginx (статика и `/api`), по умолчанию `8080`.
+- `FRONTEND_PORT` — порт nginx (статика и `/api`), по умолчанию `80`.
 - `VUE_APP_API_URL` — API base URL для production-сборки frontend, по умолчанию `/api`.
 - `BACKEND_SECRET_FILE` — путь к локальному файлу Docker Secret.
 - `DOCKER_USER` — логин Docker Hub для образов в `docker-compose.prod.yml` (формат `user/docker-project-backend`).
